@@ -87,7 +87,8 @@ def gamma_omega_plot(filepath, criteria_list = ['gamma', 'omega'], plot_mode='ky
 
     # Create a colormap with a color for each unique value
     colors = plt.cm.brg(np.linspace(0, 1, len(unique_values)))
-    # colors = plt.cm.rainbow(np.linspace(0, 1, len(unique_values)))
+
+    print('yaaaaaa')
 
 
     # Iterate over unique values and plot with different colors
@@ -95,6 +96,8 @@ def gamma_omega_plot(filepath, criteria_list = ['gamma', 'omega'], plot_mode='ky
         subset_df = gr_sim_df[gr_sim_df[label_key] == unique_value]
 
         plot_label = f"{label_key} = {unique_value}"
+
+        print(type(subset_df['kymin']), type(subset_df['gamma']))
 
         gamma_ax.set_xscale('log')
         gamma_ax.set_xlabel('kymin', fontsize=15)
@@ -109,6 +112,7 @@ def gamma_omega_plot(filepath, criteria_list = ['gamma', 'omega'], plot_mode='ky
         omega_ax.legend()
 
 
+        
 
         if verbose:
             print('x-values for filepath:', subset_df['filepath'].unique())
