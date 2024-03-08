@@ -1,8 +1,8 @@
 import sys
-# sys.path.insert(1, '/global/u1/j/joeschm/jojo_github/ST_research/coding_tools')
-from instability_analysis.src.basic_analysis_tools.discharge_info.PRE_profiles_from_iterdb import auto_create_profiles
 
-sys.path.insert(1, '/global/u1/j/joeschm/ifs_scripts')
+from PRE_profiles_from_iterdb import auto_create_profiles
+
+sys.path.insert(1, '/global/u1/j/joeschm/tools/ifs_scripts')
 from mtmDopplerFreqs_JOEY import omega_star_data
 
 import matplotlib.pyplot as plt

@@ -3,7 +3,7 @@
 from GENE_sim_tools.src.dict_simulation_data import sim_filepath_to_df
 from GENE_sim_tools.src.utils.file_functions import string_to_list
 
-def growth_freq_dataframe(filepath, input_criteria = ['gamma', 'omega']):
+def growth_freq_dataframe(filepath, input_criteria = ['gamma', 'omega', 'status==CONVERGED']):
 
     input_criteria = string_to_list(input_criteria)
 
