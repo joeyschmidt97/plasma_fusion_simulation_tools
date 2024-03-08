@@ -84,10 +84,10 @@ def pressure_profiles(profile_dict: dict):
     n_e = profile_dict['NE']['arr']
     n_i = profile_dict['NM1']['arr']
     rhot = profile_dict['TE']['rhot']
-    units = "eV^2 K^-1 m^-3"
-
+    
     P_e = n_e*T_e
     P_i = n_i*T_i
+    units = "eV^2 K^-1 m^-3"
 
     profile_dict['PE'] = {'units': units, 'rhot': rhot, 'arr': P_e}
     profile_dict['PI'] = {'units': units, 'rhot': rhot, 'arr': P_i}
