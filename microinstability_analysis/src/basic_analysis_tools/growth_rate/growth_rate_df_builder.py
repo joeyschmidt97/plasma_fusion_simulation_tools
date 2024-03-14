@@ -1,7 +1,7 @@
 # import pandas as pd
 
-from GENE_sim_tools.src.dict_simulation_data import sim_filepath_to_df
-from GENE_sim_tools.src.utils.file_functions import string_to_list
+from GENE_sim_tools.GENE_sim_reader.src.dict_simulation_data import sim_filepath_to_df
+from GENE_sim_tools.GENE_sim_reader.src.utils.file_functions import string_to_list
 
 def growth_freq_dataframe(filepath, input_criteria = ['gamma', 'omega', 'status==CONVERGED']):
 
