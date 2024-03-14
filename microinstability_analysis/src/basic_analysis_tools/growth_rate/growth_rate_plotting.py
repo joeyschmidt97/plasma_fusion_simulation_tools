@@ -16,7 +16,6 @@ def gamma_omega_plot(filepath, criteria_list = ['gamma', 'omega'], plot_mode='ky
     gr_sim_df = growth_freq_dataframe(filepath, criteria_list) 
     gr_sim_df = gr_sim_df.sort_values(by='kymin')
 
-
     
     #TODO - Make this optional to avoid legend always being there is no label_key is given
     # Assuming gr_sim_df[label_key] is a categorical variable with unique values
@@ -81,9 +80,6 @@ def gamma_omega_plot(filepath, criteria_list = ['gamma', 'omega'], plot_mode='ky
             print('x-values for filepath:', subset_df['filepath'].unique())
             x_decimal_list = [format_value_as_int_or_float(value) for value in subset_df['kymin']]
 
-            # x_decimal_list = [float(f"{value:.2f}") for value in subset_df['kymin']]
-            print(x_decimal_list)
-
 
             for _, (x_val, y_val) in enumerate(zip(subset_df['kymin'], subset_df['gamma'])):
                 label = f"{format_value_as_int_or_float(x_val)}"  # Format the label with two decimal places
@@ -103,7 +99,7 @@ def gamma_omega_plot(filepath, criteria_list = ['gamma', 'omega'], plot_mode='ky
 
             # Calculate differences using hybrid method
             for base_gamma, comp_gamma, base_omega, comp_omega in zip(base_df['gamma'].values, interpolated_gamma, base_df['omega'].values, interpolated_omega):
-                print(base_gamma, threshold, abs(base_gamma) < threshold)
+                # print(base_gamma, threshold, abs(base_gamma) < threshold)
                 
                 if abs(base_gamma) < threshold:
                     gamma_diff_values.append(comp_gamma - base_gamma)
@@ -114,8 +110,6 @@ def gamma_omega_plot(filepath, criteria_list = ['gamma', 'omega'], plot_mode='ky
                     omega_diff_values.append((comp_omega - base_omega) / base_omega * 100)
                     markers.append('o')  # Marker for percent differences
 
-                print(gamma_diff)
-                print(omega_diff)
 
             # Plot differences using different markers as necessary
             for kymin_val, gamma_diff_val, omega_diff_val, marker in zip(base_df['kymin'], gamma_diff_values, omega_diff_values, markers):
@@ -324,8 +318,6 @@ def gamma_omega_plot_ARCHIVE(filepath, criteria_list = ['gamma', 'omega'], plot_
             print('x-values for filepath:', subset_df['filepath'].unique())
             x_decimal_list = [format_value_as_int_or_float(value) for value in subset_df['kymin']]
 
-            # x_decimal_list = [float(f"{value:.2f}") for value in subset_df['kymin']]
-            print(x_decimal_list)
 
 
             for _, (x_val, y_val) in enumerate(zip(subset_df['kymin'], subset_df['gamma'])):
