@@ -28,10 +28,11 @@ def gamma_omega_plot(filepath, criteria_list = ['gamma', 'omega'], plot_mode='ky
     #TODO - default always plot this as there will always be at least 1 filepath
     base_df = gr_sim_df[gr_sim_df[label_key] == gr_sim_df[label_key].unique()[0]]
 
-    
-    if len(filepath) == 1:
+    unique_filepath_len = len(gr_sim_df['filepath'].unique())
+
+    if unique_filepath_len == 1:
         fig, (gamma_ax, omega_ax) = plt.subplots(nrows=1, ncols=2, figsize=(10, 4))
-    elif len(filepath) > 1:
+    elif unique_filepath_len > 1:
         fig, ((gamma_ax, omega_ax), (gamma_diff, omega_diff)) = plt.subplots(nrows=2, ncols=2, 
                                                                              gridspec_kw={'height_ratios': [2, 1]}, 
                                                                              figsize=(10, 6), sharex='col')

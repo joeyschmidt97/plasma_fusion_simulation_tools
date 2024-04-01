@@ -1,35 +1,54 @@
-
-# import os
-# import re
-
-# import numpy as np
-# import matplotlib.pyplot as plt
-
-# from GENE_sim_tools.GENE_sim_reader.src.dict_simulation_data import sim_filepath_to_df, criteria_smart_appender
-# from plasma_fusion_simulation_tools.microinstability_analysis.src.basic_analysis_tools.mode_structure.plot_mode_structure import check_suffix
-# from plasma_fusion_simulation_tools.microinstability_analysis.src.basic_analysis_tools.mode_structure.field_data_extraction import data_array_flattened, rescale_array
+import numpy as np
+from typing import Tuple, Dict
 
 
 
 
-# def fourier_mode_structure(dir_filepath:str, input_criteria=['field_phi']):
+def compute_delta_angles(complex_num_array: np.ndarray) -> Tuple[np.ndarray, float, Dict[str, float]]:
+    # Compute the vector differences between consecutive complex numbers to get direction vectors
+    vectors = np.diff(complex_num_array)
 
-#     suffix_crit_present = any('suffix' in crit for crit in input_criteria)
-#     if not suffix_crit_present:
-#         suffix = check_suffix(dir_filepath)
-#         suffix_crit = f'suffix=={suffix}'
-#         input_criteria.append(suffix_crit)
+    angles = []
+    for v1, v2 in zip(vectors[:-1], vectors[1:]):
+        if np.isclose(np.abs(v1), 0) or np.isclose(np.abs(v2), 0):
+            angles.append(0)
+        else:
+            angle = np.angle(v1/v2)
+            angles.append(angle)
 
-#     mod_criteria = criteria_smart_appender(input_criteria, ['field_phi', 'time==last'])    
-#     sim_df = sim_filepath_to_df(dir_filepath, criteria_list=mod_criteria)
+    angles = np.array(angles)
+    angles = np.abs((angles + np.pi) % (2 * np.pi) - np.pi)
+    
+    total_samples = len(angles)
+
+    average_angle = np.mean(angles)
+    std_angle = np.std(angles, ddof=1)
+    rel_high_angle_count = np.sum(angles > np.pi/2) / total_samples
+
+    angle_stats = {'ave': average_angle, 'std': std_angle}
+
+    return angles, rel_high_angle_count, angle_stats
 
 
-#     field_list = []
-#     if any('field_phi' in crit for crit in mod_criteria):
-#         field_list.append('field_phi')
-#     if any('field_apar' in crit for crit in mod_criteria):
-#         field_list.append('field_apar')
 
-#     for field_name in field_list:
-#         flat_array, zgrid = data_array_flattened(sim_df, field_name)
-#         complex_array = rescale_array(flat_array, sim_df)
+
+def compute_fourier_decomposition(complex_num_array: np.ndarray) -> Tuple[np.ndarray, np.ndarray, Dict[str, float]]:
+    # Compute the Fourier transform
+    fft_result = np.fft.fft(complex_num_array)
+
+    # Compute the frequency axis and normalize it
+    freq = np.abs(np.fft.fftfreq(len(complex_num_array)))
+    norm_freq = freq / np.max(np.abs(freq))
+
+    # Compute the magnitude and normalize it
+    magnitude = np.abs(fft_result)
+    norm_mag = magnitude / np.sum(magnitude)
+
+    # Calculate weighted average frequency and its standard deviation
+    average_freq = np.sum(norm_freq * norm_mag)
+    variance_freq = np.sum((norm_freq - average_freq) ** 2 * norm_mag)
+    std_freq = np.sqrt(variance_freq)
+
+    fft_stats = {'ave': average_freq, 'std': std_freq}
+
+    return norm_freq, norm_mag, fft_stats
